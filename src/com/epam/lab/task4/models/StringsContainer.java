@@ -5,53 +5,34 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.lang.IndexOutOfBoundsException;
+import com.epam.lab.task4.ContainerIndexOutOfBoundsException;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class StringsContainer implements List<String> {
 
 	private static final String[] EMPTY_CONTAINER = {};
-	private static final int DEFAULT_SIZE = 10;
-	private static final String[] DEFAULTSIZE_EMPTY_CONTAINER = {};
 	private String[] container;
 
 	public StringsContainer(int initialSize) {
 		if (initialSize > 0) {
 			this.container = new String[initialSize];
-			} else if (initialSize == 0) {
+		} else if (initialSize == 0) {
 			this.container = EMPTY_CONTAINER;
-			} else {
+		} else {
 			throw new IllegalArgumentException(String.format("Irregular Capacity: %s", initialSize));
 		}
 	}
 
 	public StringsContainer() {
 		container = new String[0];
-		}
-	
-	public StringsContainer(String[] arr) {
-		container = new String[arr.length];
-		container=copy(arr);
-		}
-	
-	
-	private String[] copy(String[] sourceArray) {
-		String[] rezultArray=new String[sourceArray.length];
-		for(int i=0;i<sourceArray.length; i++) {
-			rezultArray[i]=sourceArray[i];
-		}
-		return rezultArray;
 	}
-	
-	//копіює всі елементи з sourceArray в перші елементи receiveArray
-	private String[] copy(String[] sourceArray, String[] receiveArray) {
-		if (receiveArray.length<sourceArray.length)
-			throw EXEPT
-		for(int i=0;i<sourceArray.length; i++) {
-			rezultArray[i]=sourceArray[i];
-		}
-		return rezultArray;
+
+	public StringsContainer(String[] initialArray) {
+		container = new String[initialArray.length];
+		System.arraycopy(initialArray, 0, container, 0, initialArray.length);
 	}
-	
-	
+
 	@Override
 	public int size() {
 		return container.length;
@@ -64,43 +45,68 @@ public class StringsContainer implements List<String> {
 		} else
 			return false;
 	}
-	
+
+	// додає елемент в кінець
 	@Override
 	public boolean add(String e) {
+		boolean copyDone = false;
 		if (isEmpty()) {
-			String[] tempContainer=new String[1];
-			tempContainer[0]=e;
-			container=tempContainer;
-			return true;
-			}
-		else {
-			String[] tempContainer=new String[size()+1];
-			
-			tempContainer[size()]=e;
-			container=tempContainer;
+			String[] tempContainer = new String[1];
+			tempContainer[0] = e;
+			container = tempContainer;
+			copyDone = true;
+		} else {
+			// container=addToEnd(container,e);
+			add(size(), e);
+			copyDone = true;
 		}
-		return false;
-		
+		return copyDone;
 	}
-	
+
+	// додає елемент у задану позицію
 	@Override
 	public void add(int index, String element) {
-		throw new UnsupportedOperationException();
-
+		String[] tempLeft = new String[index];
+		String[] tempRight = new String[size() - index];
+		String[] tempElement = { element };
+		String[] newArr = new String[size() + 1];
+		System.arraycopy(container, 0, tempLeft, 0, index);
+		System.arraycopy(container, index, tempRight, 0, size() - index);
+		System.arraycopy(tempLeft, 0, newArr, 0, tempLeft.length);
+		System.arraycopy(tempElement, 0, newArr, index, 1);
+		System.arraycopy(tempRight, 0, newArr, index + 1, tempRight.length);
+		container = newArr;
 	}
+//повертає  елемент за індексом
+	@Override
+	public String get(int index) {
+		 rangeCheck(index);
+	return container[index];
+	}
+	
+	private void rangeCheck(int index) {
+        if ((index >= size())||(index<0))
+            throw new IndexOutOfBoundsException();
+    }
+	
+
+	// додає в кінець масиву 1 елемент
+	/*
+	 * private String[] addToEnd(String[] receiver, String element) { String[]
+	 * tempContainer=new String[1]; tempContainer[0]=element; String[] newArr = new
+	 * String[receiver.length + tempContainer.length]; System.arraycopy(receiver, 0,
+	 * newArr, 0, receiver.length); System.arraycopy(tempContainer, 0, newArr,
+	 * receiver.length, tempContainer.length); receiver=newArr; return receiver; }
+	 */
 
 	
 	@Override
 	public boolean remove(Object o) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public String remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-	@Override
-	public String get(int index) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -109,9 +115,6 @@ public class StringsContainer implements List<String> {
 		throw new UnsupportedOperationException();
 	}
 
-	
-	
-	
 	@Override
 	public boolean contains(Object o) {
 		// TODO Auto-generated method stub
@@ -157,7 +160,7 @@ public class StringsContainer implements List<String> {
 	public void clear() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public int indexOf(Object o) {
 		throw new UnsupportedOperationException();
@@ -184,7 +187,7 @@ public class StringsContainer implements List<String> {
 	}
 
 	public String[] getContainer() {
-		///!!! ВИКИНУТИ
+		/// !!! ВИКИНУТИ
 		return container;
 	}
 
