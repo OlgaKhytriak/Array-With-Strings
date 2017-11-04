@@ -1,9 +1,13 @@
 package com.epam.lab.task4.stringcontainertask;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.lang.IndexOutOfBoundsException;
+import com.epam.lab.task4.ContainerIndexOutOfBoundsException;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class StringsContainer implements List<String> {
 
@@ -62,7 +66,6 @@ public class StringsContainer implements List<String> {
 	// додає елемент у задану позицію
 	@Override
 	public void add(int index, String element) {
-		rangeCheck(index);
 		String[] tempLeft = new String[index];
 		String[] tempRight = new String[size() - index];
 		String[] tempElement = { element };
@@ -74,25 +77,29 @@ public class StringsContainer implements List<String> {
 		System.arraycopy(tempRight, 0, newArr, index + 1, tempRight.length);
 		container = newArr;
 	}
-
-	// повертає елемент за індексом
+//повертає  елемент за індексом
 	@Override
 	public String get(int index) {
-		rangeCheck(index);
-		return container[index];
+		 rangeCheck(index);
+	return container[index];
 	}
-
+	
 	private void rangeCheck(int index) {
-		if ((index > size()) || (index < 0)) {
-			throw new IndexOutOfBoundsException();
-		}
-	}
+        if ((index >= size())||(index<0))
+            throw new IndexOutOfBoundsException();
+    }
+	
 
-	public String[] getContainer() {
-		/// !!! ВИКИНУТИ
-		return container;
-	}
+	// додає в кінець масиву 1 елемент
+	/*
+	 * private String[] addToEnd(String[] receiver, String element) { String[]
+	 * tempContainer=new String[1]; tempContainer[0]=element; String[] newArr = new
+	 * String[receiver.length + tempContainer.length]; System.arraycopy(receiver, 0,
+	 * newArr, 0, receiver.length); System.arraycopy(tempContainer, 0, newArr,
+	 * receiver.length, tempContainer.length); receiver=newArr; return receiver; }
+	 */
 
+	
 	@Override
 	public boolean remove(Object o) {
 		throw new UnsupportedOperationException();
@@ -110,7 +117,8 @@ public class StringsContainer implements List<String> {
 
 	@Override
 	public boolean contains(Object o) {
-		throw new UnsupportedOperationException();
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -176,6 +184,11 @@ public class StringsContainer implements List<String> {
 	@Override
 	public List<String> subList(int fromIndex, int toIndex) {
 		throw new UnsupportedOperationException();
+	}
+
+	public String[] getContainer() {
+		/// !!! ВИКИНУТИ
+		return container;
 	}
 
 	@Override
