@@ -1,27 +1,14 @@
-package com.epam.lab.task4;
+package com.epam.lab.task4.stringcontainertask;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Category;
 import org.apache.log4j.Logger;
-import com.epam.lab.task4.stringcontainertask.ListsHandler;
-import com.epam.lab.task4.stringcontainertask.StringsContainer;
 
-public class StartTask4 {
-	private static final Logger LOG = Logger.getLogger(StartTask4.class);
+public class ListsHandler {
+	private static final Logger LOG = Logger.getLogger(ListsHandler.class);
 	private static final int kIteration = 10;
-	
-
-	public static void main(String[] args) {
-		LOG.info("The Begin of Task4 ++  ----------------------");
-		System.out.println("zscacadfc");
-		ListsHandler listsHandler = new ListsHandler();
-		listsHandler.comparePerformance();
-		StartTask4 startTask4 = new StartTask4();
-		startTask4.comparePerformance();
-		LOG.info("The End of Task4 ++  ----------------------");
-	}
 
 	public void comparePerformance() {
 		List<String> stringsContainer = new StringsContainer();
