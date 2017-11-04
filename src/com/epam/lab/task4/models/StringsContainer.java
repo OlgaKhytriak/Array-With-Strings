@@ -1,4 +1,4 @@
-package com.epam.lab.task4.stringcontainertask;
+package com.epam.lab.task4.models;
 
 import java.util.Collection;
 import java.util.Iterator;
