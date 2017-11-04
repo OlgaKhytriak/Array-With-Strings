@@ -1,6 +1,8 @@
 package com.epam.lab.task4;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -8,48 +10,32 @@ import com.epam.lab.task4.models.StringsContainer;
 
 public class StartTask4 {
 	private static final Logger LOG = Logger.getLogger(StartTask4.class);
+	private static final int kIteration = 100000;
 
 	public static void main(String[] args) {
 		StartTask4 startTask4 = new StartTask4();
-		//startTask4.test1();	
-		startTask4.test2();
-		
-		
+		startTask4.comparePerformance();
+
 		LOG.info("The End of StartTask4 ++  ----------------------");
-
-	}
-	
-	private void test2() {
-		String[] myArr={"aaaa","bb","ccc"};
-		StringsContainer stringsContainer=new StringsContainer(myArr) ;
-		String[] sss=stringsContainer.getContainer();
-		for(String str:sss) {
-			LOG.info(str);
-		}
-		LOG.info( "-------" );
-		stringsContainer.add("last");
-		sss=stringsContainer.getContainer();
-		for(String str:sss) {
-			LOG.info(str);
-		}
-		System.out.println(stringsContainer.get(10));
 	}
 
-	private void test1() {
-		StringsContainer stringsContainer=new StringsContainer();
-		stringsContainer.add("aaaa");
-		stringsContainer.add("bb");
-		stringsContainer.add("ccc");
-		stringsContainer.add("d");
-		stringsContainer.add(2,"second");
-		stringsContainer.add(5,"fifth");
-		stringsContainer.add(0,"zero");
-		String[] sss=stringsContainer.getContainer();
+	private void comparePerformance() {
+		List<String> stringsContainer = new StringsContainer();
+		List<String> stringsArrayList = new ArrayList<String>();
+		long rezContainer = testAddMethod(stringsContainer);
+		long rezArrayList = testAddMethod(stringsArrayList);
+		LOG.info(String.format("Method \"add\" in StringContainer  performed %s ", rezContainer));
+		LOG.info(String.format("Method \"add\" in ArrayList  performed %s ", rezArrayList));
 
-		for(String str:sss) {
-			LOG.info(str);
-		}
 	}
 
+	private long testAddMethod(List<String> listToTest) {
+		Date startLinked = new Date();
+		for (int i = 0; i < kIteration; i++) {
+			listToTest.add("some string");
+		}
+		Date finishLinked = new Date();
+		return finishLinked.getTime() - startLinked.getTime();
+	}
 
 }
